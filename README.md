@@ -1,3 +1,59 @@
+1.设置@别名
+  解决：安装craco
+  1)npm install @craco/craco --save-dev
+  2)根目录创建craco.config.js
+    const path = require('path');
+    module.exports = {
+      webpack: {
+      alias: {
+      '@': path.resolve(__dirname, 'src'),
+      },
+    },
+  };
+  3)修改 package.json 中的 scripts
+    "scripts": {
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
+    "eject": "react-scripts eject"
+    }
+  4)配置 tsconfig.json 让 TS 和 VSCode 识别别名：在 compilerOptions 中添加 baseUrl 和 paths：
+    {
+      "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+          "@/*": ["src/*"]
+        }
+        // ... 其余配置保持不变
+      }
+    }
+
+2.eslink、prettier
+3.git管理
+4.路由守卫、请求响应拦截
+5.不支持导入scss格式的样式表
+  解决：修改react-app-env.d.ts，添加以下代码：
+  declare module '*.scss' {
+  const content: { [className: string]: string };
+  export default content;
+}
+
+// 如果还需要支持 .sass 文件，也加上
+declare module '*.sass' {
+  const content: { [className: string]: string };
+  export default content;
+}
+
+
+
+
+
+
+
+
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
