@@ -1,7 +1,7 @@
-1.设置@别名
-  解决：安装craco
-  1)npm install @craco/craco --save-dev
-  2)根目录创建craco.config.js
+# 1.设置@别名
+## 解决：安装craco
+### 1)npm install @craco/craco --save-dev
+### 2)根目录创建craco.config.js
     const path = require('path');
     module.exports = {
       webpack: {
@@ -10,14 +10,14 @@
       },
     },
   };
-  3)修改 package.json 中的 scripts
+### 3)修改 package.json 中的 scripts
     "scripts": {
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject"
     }
-  4)配置 tsconfig.json 让 TS 和 VSCode 识别别名：在 compilerOptions 中添加 baseUrl 和 paths：
+### 4)配置 tsconfig.json 让 TS 和 VSCode 识别别名：在 compilerOptions 中添加 baseUrl 和 paths：
     {
       "compilerOptions": {
         "baseUrl": ".",
@@ -28,10 +28,9 @@
       }
     }
 
-2.eslink、prettier
-3.git管理
-4.路由守卫、请求响应拦截
-5.不支持导入scss格式的样式表
+## 2.eslink、prettier
+## 3.路由守卫、请求响应拦截
+## 4.不支持导入scss格式的样式表
   解决：修改react-app-env.d.ts，添加以下代码：
   declare module '*.scss' {
   const content: { [className: string]: string };
