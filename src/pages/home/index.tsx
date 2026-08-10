@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {Layout} from 'antd';
+import {Layout,theme} from 'antd';
 import MySlider from '@/components/mySlider';
 import MyHeader from '@/components/myHeader';
 import MyBreadCrumb from '@/components/myBreadCrumb';
@@ -8,6 +8,9 @@ const { Header, Content, Footer, Sider } = Layout;
 
 const Home: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const {
+    token: { colorBgContainer, borderRadiusLG },
+  } = theme.useToken();
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
@@ -15,7 +18,7 @@ const Home: React.FC = () => {
         <MySlider />
       </Sider>
       <Layout>
-        <Header style={{ padding: 0,}} >
+        <Header style={{ padding: 0,background: colorBgContainer}} >
           <MyHeader />
         </Header>
         <Content style={{ margin: '0 16px' }}>
