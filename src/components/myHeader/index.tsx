@@ -31,9 +31,9 @@ function MyHeader(){
   const username = sessionStorage.getItem("username")
   const dispatch = useDispatch()
 
-  function onClick(e:any){
+  const onClick:MenuProps['onClick'] = ({key})=>{
     // console.log(e.key)
-    if(e.key==='0'){
+    if(key==='0'){
       //跳转到个人中心
       console.log('跳转到个人中心')
     }else{
