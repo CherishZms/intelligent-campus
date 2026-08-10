@@ -2,10 +2,13 @@ import '@/pages/login/index.scss'
 import bg from '@/assets/bg.jpg'
 import lgbg from '@/assets/lgbg.jpg'
 import logo from '@/assets/logo.png'
-import React from 'react';
-import type { FormProps } from 'antd';
-import { Button, Checkbox, Form, Input,Alert,message } from 'antd';
+import { Button,  Form, Input,message } from 'antd';
 import { UserOutlined,LockOutlined } from '@ant-design/icons';
+import {login} from '@/api/user'
+import { setToken } from '@/store/userSlice';
+import { useDispatch } from 'react-redux';
+import { replace, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 interface FieldType{
   username?:string,
@@ -13,19 +16,32 @@ interface FieldType{
 }
 
 function Login(){
-
+  //获取登录表单数据【antd固定】
   const [form] = Form.useForm()
   // const [messageApi, contextHolder] = message.useMessage();
 
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const [isloading,setLoading] = useState(false)
+
   function handleLogin(){
-    form.validateFields().then((res)=>{
-      console.log(res)
+    setLoading(true)
+    form.validateFields().then(async (res)=>{
+        const data = await login(res)
+        // 登录成功
+        setLoading(false)
+        message.success(data.message)
+        dispatch(setToken(data.data.access_token))
+        navigate("/",{replace:true})
     }).catch((e)=>{
       // console.log(e)
+      setLoading(false)
       message.error(e.message)
     })
 
   }
+  
 
   return <>
     <div className='login' style={{backgroundImage:`url(${bg})`}}>
@@ -66,7 +82,12 @@ function Login(){
               />
             </Form.Item>
             <Form.Item>
-              <Button type="primary" style={{width:'100%'}} onClick={handleLogin}>
+              <Button 
+                type="primary" 
+                style={{width:'100%'}} 
+                onClick={handleLogin}
+                loading={isloading}
+                >
                 登录
               </Button>
             </Form.Item>
