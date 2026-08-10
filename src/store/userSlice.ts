@@ -10,9 +10,10 @@ const authSlice = createSlice({
       state.token = action.payload
       sessionStorage.setItem("token",action.payload)
     },
-    removeToken:(state,action)=>{
+    removeToken:(state)=>{
       state.token = ""
       sessionStorage.removeItem("token")
+      sessionStorage.removeItem("username")
     }
   }
 })
