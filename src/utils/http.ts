@@ -1,5 +1,5 @@
 
-import store from "@/store";
+import {store} from "@/store";
 import axios,{AxiosInstance,InternalAxiosRequestConfig,AxiosResponse} from "axios";
 
 const http:AxiosInstance = axios.create({

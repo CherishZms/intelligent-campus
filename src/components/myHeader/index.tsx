@@ -28,7 +28,7 @@ const items: MenuProps['items'] = [
 
 function MyHeader(){
 
-  const username = sessionStorage.getItem("username")
+  const username = localStorage.getItem("username")
   const dispatch = useDispatch()
 
   const onClick:MenuProps['onClick'] = ({key})=>{
