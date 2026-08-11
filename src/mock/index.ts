@@ -1,5 +1,4 @@
-
-import store from '@/store'
+import {store} from '@/store'
 import Mock from 'mockjs'
 
 Mock.setup({
