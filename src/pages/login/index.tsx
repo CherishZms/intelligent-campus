@@ -7,8 +7,12 @@ import { UserOutlined,LockOutlined } from '@ant-design/icons';
 import {login} from '@/api/user'
 import { setToken } from '@/store/userSlice';
 import { useDispatch } from 'react-redux';
-import { replace, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { getMenu } from '@/api/user';
+import { setAsyncRouterList } from '@/store/userSlice';
+
+
 
 interface FieldType{
   username?:string,
@@ -29,11 +33,16 @@ function Login(){
     setLoading(true)
     form.validateFields().then(async (res)=>{
         const data = await login(res)
+        
         // 登录成功
         setLoading(false)
         message.success(data.message)
         dispatch(setToken(data.data.access_token))
-        sessionStorage.setItem('username',data.data.username)
+        localStorage.setItem('username',data.data.username)
+        
+        const resData = await getMenu()
+        dispatch(setAsyncRouterList(resData.data))
+
         navigate("/",{replace:true})
     }).catch((e)=>{
       // console.log(e)

@@ -1,9 +1,6 @@
 import { RouterProvider } from "react-router-dom";
 import { Suspense, useEffect, useMemo, useState } from "react";
-
-import { getMenu } from '@/api/user';
-import { useDispatch, useSelector } from 'react-redux';
-import { setAsyncRouterList } from '@/store/userSlice';
+import { useSelector } from 'react-redux';
 import { genterateRouter } from '@/router/generateRouter'
 import {defaultRouters} from '@/router/defaultRouter'
 import { createBrowserRouter } from "react-router-dom";
@@ -19,28 +16,24 @@ import { RouteObject } from "react-router-dom";
 
 
 function App() {
-  const dispatch = useDispatch()
   const [routersList,setRoutersList] = useState(defaultRouters)
   const token = useSelector((state:any)=>state.authSlice.token)
+  const {asyncRouterList} = useSelector((state:any)=>state.authSlice)
   useEffect(()=>{
-    if(token){
+    if(token && asyncRouterList && asyncRouterList.length>0){
       getMenuList()
     }
-  },[token])
+  },[token,asyncRouterList])
   const router = useMemo(()=>{
     return createBrowserRouter(routersList)
   },[routersList])
-  async function getMenuList(){
-     // 发请求获得菜单
-      const {data} = await getMenu()
-      dispatch(setAsyncRouterList(data))
-      // console.log('请求的原始数据',data)
-      const route = genterateRouter(data)
-      // console.log(route)
-      // 深拷贝
+  function getMenuList(){
+      const route = genterateRouter(asyncRouterList)
       const routes:RouteObject[] = [...routersList]
       routes[0].children = route
-      routes[0].children[0].index = true
+      if(route[0].children){
+        routes[0].children[0].index = true
+      }
       console.log(routes)
       setRoutersList(routes)
   }
