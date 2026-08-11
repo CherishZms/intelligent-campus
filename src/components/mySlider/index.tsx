@@ -2,24 +2,26 @@ import { Menu } from 'antd';
 import icons from './iconList';
 import { useEffect, useState } from 'react';
 // import type { MenuProps } from 'antd';
-import { getMenu } from '@/api/user';
 import "./index.scss"
 import logo from '@/assets/logo.png'
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 // type MenuItem = Required<MenuProps>['items'][number];
 
 function MySlider(){
   const [collapsed, setCollapsed] = useState(false);
   const [menuItems,setMenuItems] = useState<any>([])
+  const {asyncRouterList} = useSelector((state:any)=>state.authSlice)
+  const navigate = useNavigate()
+  // console.log(asyncRouterList)
 
   useEffect(()=>{
     getMenuItems()
-  },[])
-  async function getMenuItems(){
-    // 发请求获得菜单
-    const {data} = await getMenu()
-    //处理返回的数据
-    const mappedMenuItems = handleMenuItems(data)
+  },[asyncRouterList])
+  function getMenuItems(){
+    //处理返回的数据(菜单格式)
+    const mappedMenuItems = handleMenuItems(asyncRouterList)
     // console.log(mappedMenuItems)
     setMenuItems(mappedMenuItems)
   }
@@ -32,6 +34,9 @@ function MySlider(){
           children:item.children?handleMenuItems(item.children):null
         })
       })
+  }
+  function onClick({key}:{key:string}){
+    navigate(key)
   }
 
   return <div className="navLeft">
@@ -46,6 +51,7 @@ function MySlider(){
               theme="dark"
               inlineCollapsed={collapsed}
               items={menuItems}
+              onClick={onClick}
             />
   </div>
 }

@@ -1,6 +1,5 @@
 
 import store from '@/store'
-import { message } from 'antd'
 import Mock from 'mockjs'
 
 Mock.setup({

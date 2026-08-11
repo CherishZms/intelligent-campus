@@ -3,6 +3,7 @@ import {Layout,theme} from 'antd';
 import MySlider from '@/components/mySlider';
 import MyHeader from '@/components/myHeader';
 import MyBreadCrumb from '@/components/myBreadCrumb';
+import { Outlet } from 'react-router-dom';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -23,14 +24,7 @@ const Home: React.FC = () => {
         </Header>
         <Content style={{ margin: '0 16px' }}>
           <MyBreadCrumb />
-          <div
-            style={{
-              padding: 24,
-              minHeight: 360,
-            }}
-          >
-            Bill is a cat.
-          </div>
+          <Outlet />
         </Content>
         <Footer style={{ textAlign: 'center' }}>
           Intelligent Campus ©{new Date().getFullYear()} Created by Mindy
