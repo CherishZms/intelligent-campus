@@ -33,6 +33,7 @@ function Login(){
         setLoading(false)
         message.success(data.message)
         dispatch(setToken(data.data.access_token))
+        sessionStorage.setItem('username',data.data.username)
         navigate("/",{replace:true})
     }).catch((e)=>{
       // console.log(e)
