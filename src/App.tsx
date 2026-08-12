@@ -1,4 +1,4 @@
-import { RouterProvider } from "react-router-dom";
+import { redirect, RouterProvider } from "react-router-dom";
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { useSelector } from 'react-redux';
 import { genterateRouter } from '@/router/generateRouter'
@@ -29,19 +29,29 @@ function App() {
   },[routersList])
   function getMenuList(){
       const route = genterateRouter(asyncRouterList)
-      console.log('111',route)
+      // console.log('111',route)
       const routes:RouteObject[] = [...routersList]
-      routes[0].children = route
-      if(route[0].children){
-        routes[0].children[0].index = true
-      }
-      console.log(routes)
+      // 加入index索引路由，访问 / 自动重定向dashboard
+      routes[0].children = [
+      {
+        index: true,
+        loader: () => redirect('/dashboard'),
+        hydrateFallbackElement:<div>loading</div>
+      },
+      ...route
+    ]
+      // if(route[0].children){
+      //   const red:string = routes[0].children[0].path !
+      //   routes[0].loader = ()=>redirect(red)
+      // }
+      // console.log(routes)
       setRoutersList(routes)
   }
   
   return (
     <Suspense fallback={<h1>加载中</h1>}>
-      <RouterProvider router={router} />
+      {/*增加key，强制重置路由 */}
+      <RouterProvider router={router} key={router} />
     </Suspense>
   );
 }
