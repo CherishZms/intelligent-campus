@@ -1,5 +1,6 @@
 import { RouteObject } from "react-router-dom"
 import {routerMap} from './routerMap'
+
 type MenuListType = {
   key:string,
   label:string,
@@ -10,6 +11,7 @@ type MenuListType = {
 
 // 处理后端返回的动态路由 转化成路由表格式
 export const genterateRouter = (data:MenuListType[]):RouteObject[]=>{
+  
   return data.map(item=>{
     const hasChildren = item.children?.length?true:false
     const obj:RouteObject ={
