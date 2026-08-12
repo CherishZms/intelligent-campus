@@ -20,7 +20,7 @@ function MySlider(){
 
   // 动态获取当前路由
   const location = useLocation()
-  console.log(location.pathname)
+  // console.log(location.pathname)
   // console.log(asyncRouterList)
 
   useEffect(()=>{

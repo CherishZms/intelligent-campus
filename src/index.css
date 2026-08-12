@@ -9,3 +9,16 @@
 list{
   list-style: none;
 }
+
+.mt{
+  margin-top: 15px;
+}
+.mb{
+  margin-bottom: 15px;
+}
+.ml{
+  margin-left: 15px;
+}
+.mr{
+  margin-right: 15px;
+}
