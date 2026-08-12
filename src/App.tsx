@@ -29,6 +29,7 @@ function App() {
   },[routersList])
   function getMenuList(){
       const route = genterateRouter(asyncRouterList)
+      console.log('111',route)
       const routes:RouteObject[] = [...routersList]
       routes[0].children = route
       if(route[0].children){

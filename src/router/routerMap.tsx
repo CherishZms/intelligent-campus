@@ -11,7 +11,7 @@ const Car = lazy(()=>import('@/pages/estate/car'))
 const Repair = lazy(()=>import('@/pages/repair'))
 const Finance = lazy(()=>import('@/pages/finance'))
 const Contract = lazy(()=>import('@/pages/finance/constract'))
-const Surrender = lazy(()=>import('@/pages/finance/constract'))
+const Surrender = lazy(()=>import('@/pages/finance/surrender'))
 const Bill = lazy(()=>import('@/pages/finance/bill'))
 const Merchants = lazy(()=>import('@/pages/merchants'))
 const Operation = lazy(()=>import('@/pages/operation'))
@@ -27,7 +27,7 @@ const Personal = lazy(()=>import('@/pages/personal'))
 export const routerMap = {
   "/dashboard":<DashBoard />,
   "/users":<Users />,
-  "/users/1ist":<UserList />,
+  "/users/list":<UserList />,
   "/users/add":<AddUser />,
   "/estate":<Estate />,
   "/estate/tenement":<Tenement />,
@@ -37,10 +37,10 @@ export const routerMap = {
   "/finance":<Finance />,
   "/finance/contract":<Contract />,
   "/finance/surrender":<Surrender />,
-  "/finance/bil1":<Bill />,
+  "/finance/bill":<Bill />,
   "/merchants":<Merchants />,
   "/operation":<Operation />,
-  "/operation/al1":<OperationAll />,
+  "/operation/all":<OperationAll />,
    "/operation/article":<Article />,
    "/operation/comments":<Comments />,
    "/equipment":<Equipment />,
