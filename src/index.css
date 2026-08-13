@@ -9,3 +9,41 @@
 list{
   list-style: none;
 }
+
+.mt{
+  margin-top: 15px;
+}
+.mb{
+  margin-bottom: 15px;
+}
+.ml{
+  margin-left: 15px;
+}
+.mr{
+  margin-right: 15px;
+}
+
+.fl{
+  float: left;
+}
+.fr{
+  float: right;
+}
+/* 伪元素清除浮动（闭合浮动）方案，解决父元素高度塌陷问题 */
+/* 
+  当子元素设置 float:left / right 浮动之后：
+  浮动元素脱离普通文档流，父容器不会被浮动子元素撑开，父元素高度变成 0（高度塌陷），会造成布局错乱。
+  .clearfix 就是给父盒子加这个类，修复高度塌陷。
+
+  现代开发更加推荐overflow: auto;
+*/
+.clearfix:after{  
+  content: "";  /* 给 .clearfix 元素的【后面】生成一个看不见的虚拟伪元素，必须写，after才生效 */
+  height: 0;  /* 这个伪元素高度为0，不额外占用页面空间 */
+  display: block; /* 把伪元素转为块级元素，clear只对块级生效 */
+  clear: both;   /* 清除左右两边浮动，强制该伪元素跑到所有浮动元素的下方，撑开父容器 */
+  visibility: hidden; /*不可见*/
+}
+.clearflow{
+  overflow: auto;
+}
