@@ -1,4 +1,5 @@
 import {store} from '@/store'
+import { message } from 'antd'
 import Mock from 'mockjs'
 
 Mock.setup({
@@ -490,5 +491,75 @@ Mock.mock('/getDashBoardData',"get",()=>{
   }
 })
 
+//随机生成电话号码
+Mock.Random.extend({
+  phone:function(){
+    const phonePrefixs = ['13','14','15','16','17','18','19']
+    return this.pick(phonePrefixs) + Mock.mock(/\d{9}/)
+  }
+})
 
-// Mock.mock(/.*/, 'options', () => ({ code: 200 }))
+//获取用户列表数据
+Mock.mock('/getUserList',"post",(option:any)=>{
+  const {pageSize,page,companyName,contact,phone} = JSON.parse(option.body)
+  const total = 287
+  function getShowCount(){
+     const count = Math.ceil(total / pageSize)
+     if(page>count){
+      return total
+     }else if(page===count){
+      return total % pageSize
+     }else{
+      return pageSize
+     }
+  }
+  const showCount = getShowCount()
+
+  return ({
+    code:200,
+    message:"获取用户列表成功",
+    data:Mock.mock({
+      [`list|${showCount}`]:[
+        {
+          "id":"@string('number',6)", //随机生成一个六位数字id
+          "name":"@cname", //随机生成中文人名
+          "status|1":["1","2","3"],
+          "tel":"@phone",
+          "business|1":['制造业',"互联网","新媒体","美业","新能源","物流","电商","建筑业"],
+          "email":"@email",
+          "creditCode":"@string('number',18)",
+          "industryNum":"@string('number',15)",
+          "organizationCode":"@string('upper',9)",
+          "legalPerson":"@cname"
+        }
+      ],
+      total:total
+    })
+  })
+})
+
+
+//根据id删除租户
+Mock.mock('/deleteUser','post',(option:any)=>{
+  const {body:id} = option
+  return {
+    code:200,
+    message:'删除用户成功',
+    data:`删除用户id为${id}`
+  }
+})
+
+//批量根据id删除租户
+Mock.mock('/deleteUsers','post',(option:any)=>{
+  // console.log('前',typeof option.body) //string
+  const data = JSON.parse(option.body)
+  // const {body} = JSON.parse(option)
+  // console.log('后',typeof data) //object
+  // console.log(option)
+
+  return {
+    code:200,
+    message:'批量删除用户成功',
+    data:`删除用户id为${data}`
+  }
+})
