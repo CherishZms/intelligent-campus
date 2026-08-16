@@ -7,6 +7,6 @@ export interface DataType{
   email:string, //邮箱
   creditCode:string, //统一信用代码
   industryNum:string, //工商注册号
-  origanizationCode:string, //组织机构代码
+  organizationCode:string, //组织机构代码
   legalPerson:string //法人名
 }

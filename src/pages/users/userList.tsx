@@ -1,10 +1,14 @@
 import { Card, Col, Input, Row, Button, Table,Pagination, Tag, Popconfirm,message } from "antd"
 import type { TableProps,PaginationProps } from "antd"
 import type { DataType } from './userDataType'
-import { useMemo, useState } from "react"
+import { useCallback, useMemo, useState } from "react"
 import { getUserListApi } from "@/api/userList"
 import { useEffect } from "react"
+import UserModel from './userModel'
+import React from "react"
 import { deleteUserByIdApi,batchDeleteUsersByIdApi } from "@/api/userList"
+import { setUserEditForm } from "@/store/userFormSlice"
+import { useDispatch, UseDispatch } from "react-redux"
 
 const defaultSearchList = { 
     companyName: "", //公司名称
@@ -21,10 +25,29 @@ function UserList() {
   const [page,setPage] = useState<number>(1) //请求的页码数，第一页、第二页
   const [selectedRowKeys,setSelectedRowKeys] = useState<React.Key[]>([])
   const [searchList, setSearchList] = useState(defaultSearchList)
+  const [title,setTitle] = useState<string>("")
+  const [visible,setVisible] = useState<boolean>(false)
+  const dispatch = useDispatch()
 
   const batchDeleteType = useMemo(()=>{
     return selectedRowKeys.length?false:true
   },[selectedRowKeys])
+
+  const handleVisible = (record:DataType)=>{
+    setVisible(true)
+    setTitle('编辑租户')
+    dispatch(setUserEditForm(record))
+
+  }
+  const addCompany = ()=>{
+    setVisible(true)
+    setTitle('新增租户')
+    dispatch(setUserEditForm({}))
+  }
+  //用useCallBack缓存传给子组件的方法
+  const closeModal = useCallback(()=>{
+    setVisible(false)
+  },[])
 
   const columns: TableProps<DataType>['columns'] = [
     {
@@ -124,7 +147,13 @@ function UserList() {
       align: 'center',
       render(value,record){
       return <>
-      <Button color="primary" variant="solid" className="mr" size="small">编辑</Button>
+      <Button 
+        color="primary" 
+        variant="solid" 
+        className="mr" 
+        size="small"
+        onClick={()=>handleVisible(record)}
+        >编辑</Button>
       <Popconfirm
         title="删除确认"
         description="删除不可恢复，是否确认删除"
@@ -188,7 +217,9 @@ function UserList() {
   const batchDelete = async()=>{
     // console.log(selectedRowKeys)
     const res = await batchDeleteUsersByIdApi(selectedRowKeys)
-    console.log(res)
+    // console.log(res)
+    message.success("批量删除成功")
+    getUserList()
   }
 
   return <div className="userList">
@@ -219,7 +250,7 @@ function UserList() {
       </Row>
     </Card>
     <Card className="mt tr" >
-      <Button type="primary" className="mr">新增企业</Button>
+      <Button type="primary" className="mr" onClick={addCompany}>新增租户</Button>
       <Popconfirm
         title="删除确认"
         description="删除不可恢复，是否确认删除"
@@ -251,6 +282,9 @@ function UserList() {
         onChange={onPageChange}
        />
     </Card>
+    <MyUserModel visible={visible} title={title} closeModal={closeModal} renderList={getUserList}/>
   </div>
 }
+//性能优化：用memo缓存组件
+const MyUserModel = React.memo(UserModel)
 export default UserList

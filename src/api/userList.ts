@@ -1,4 +1,5 @@
 import {post} from "@/utils/request"
+import type {DataType} from "@/pages/users/userDataType"
 
 interface SearchUserDataType {
     companyName?: string, //公司名称
@@ -21,4 +22,9 @@ export const deleteUserByIdApi = (data:string)=>{
 //批量删除租户信息
 export const batchDeleteUsersByIdApi = (data:React.Key[])=>{
   return post('/deleteUsers',data)
+}
+
+// 新增租户信息
+export const addUserApi = (data:DataType)=>{
+  return post('/addUser',data)
 }

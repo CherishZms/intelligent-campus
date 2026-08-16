@@ -97,11 +97,11 @@ const menuList = [
                 "label": "租户列表",
                 "key": "/users/list",
             },
-            {
-                "icon": "UserAddOutlined",
-                "label": "新增租户",
-                "key": "/users/add",
-            }
+            // {
+            //     "icon": "UserAddOutlined",
+            //     "label": "新增租户",
+            //     "key": "/users/add",
+            // }
         ]
     },
     {
@@ -225,11 +225,11 @@ const userMenuList = [
                 "label": "租户列表",
                 "key": "/users/list",
             },
-            {
-                "icon": "UserAddOutlined",
-                "label": "新增租户",
-                "key": "/users/add",
-            }
+            // {
+            //     "icon": "UserAddOutlined",
+            //     "label": "新增租户",
+            //     "key": "/users/add",
+            // }
         ]
     },
     {
@@ -295,11 +295,11 @@ const managerMenuList = [
                 "label": "租户列表",
                 "key": "/users/list",
             },
-            {
-                "icon": "UserAddOutlined",
-                "label": "新增租户",
-                "key": "/users/add",
-            }
+            // {
+            //     "icon": "UserAddOutlined",
+            //     "label": "新增租户",
+            //     "key": "/users/add",
+            // }
         ]
     },
     {
@@ -561,5 +561,16 @@ Mock.mock('/deleteUsers','post',(option:any)=>{
     code:200,
     message:'批量删除用户成功',
     data:`删除用户id为${data}`
+  }
+})
+
+//新增租户
+Mock.mock('/addUser',"post",(option:any)=>{
+  const data = JSON.parse(option.body)
+  // 后端接收到参数后，判断id是否存在，存在返回修改成功，不存在返回新增成功
+  return {
+    code:200,
+    message:`新增/修改租户成功！`,
+    data:data
   }
 })
