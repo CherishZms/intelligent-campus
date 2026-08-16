@@ -7,6 +7,8 @@ import '@/mock'
 import {store,persistor} from '@/store'
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
+import {ConfigProvider} from 'antd'
+import zhCN from 'antd/locale/zh_CN';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -14,7 +16,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <Provider store={store}>
     <PersistGate persistor={persistor} loading={<div>Loading...</div>}>
-      <App />
+      <ConfigProvider locale={zhCN}>
+        <App />
+      </ConfigProvider>
     </PersistGate>
   </Provider>
     
