@@ -47,3 +47,14 @@ list{
 .clearflow{
   overflow: auto;
 }
+
+.tr{
+  text-align: right;
+}
+.tc{
+  text-align: center;
+}
+.flexRight{
+  display: flex;
+  justify-content: flex-end;
+}
