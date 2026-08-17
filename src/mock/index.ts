@@ -1,5 +1,5 @@
 import {store} from '@/store'
-import { message } from 'antd'
+import roomPic from "@/assets/roomPic.jpg"
 import Mock from 'mockjs'
 
 Mock.setup({
@@ -619,5 +619,34 @@ Mock.mock('/updataEstate',"post",(option:any)=>{
     code:200,
     message:"修改楼宇成功",
     data:`${obj}接收修改数据`
+  }
+})
+
+//获取房间列表的接口
+function generateRooms() {
+    const rooms = [];
+    for (let i = 0; i < 50; i++) {
+        const floor = 1 + Math.floor(i / 6); // 每6个房间一层
+        const roomNumber = floor * 100 + (101 + (i % 6)); // 计算房间号
+        rooms.push({
+            roomNumber,
+            decorationType: Mock.Random.pick(['毛坯', '精装']),
+            area: Mock.Random.integer(100, 500),
+            unitPrice: Mock.Random.integer(1, 5),
+            src:roomPic
+        });
+    }
+    return rooms;
+  }
+
+//房间管理
+Mock.mock('/roomList',"post",(option:any)=>{
+  const {roomId} = JSON.parse(option.body)
+  return {
+    code:200,
+    message:`获取房间管理数据成功，${roomId}`,
+    data:{
+      rooms:generateRooms()
+    }
   }
 })
