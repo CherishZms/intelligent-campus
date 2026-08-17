@@ -574,3 +574,50 @@ Mock.mock('/addUser',"post",(option:any)=>{
     data:data
   }
 })
+
+//获取楼宇管理 ////查询楼宇接口
+Mock.mock('/estateList',"post",(option:any)=>{
+  // console.log(option)
+  const reserse = JSON.parse(option.body)
+  // console.log(reserse)
+  return {
+    code:200,
+    message:"获取楼宇列表成功",
+    data:Mock.mock({
+      "list|16":[
+        {
+          "id":"@string('number',6)",
+          "name|+1":["东座1期A栋","东座1期B栋","东座1期C栋","东座1期D栋","东座2期A栋","东座2期B栋","东座2期C栋","东座2期D栋","西座1期A栋","西座1期B栋","西座1期C栋","西座1期D栋","西座2期A栋","西座2期B栋","西座2期C栋","西座2期D栋"],
+          "person":"@cname",
+          "tel" : /1[3-9]\d{9}/,
+          "status|1":["1","2","3"],
+          "vacancyRate":"@integer(1,100)",
+          "propertyFee":"@integer(1,100)"
+        }
+      ]
+    }).list
+  }
+})
+
+//删除楼宇
+Mock.mock('/deleteEstate',"post",(option:any)=>{
+  const {id,name} = JSON.parse(option.body)
+  return {
+    code:200,
+    message:"删除楼宇成功",
+    data:`楼宇id为：${id},名称为${name}`
+  }
+})
+
+//修改楼宇
+Mock.mock('/updataEstate',"post",(option:any)=>{
+  // const {id,name,person,tel,status,vacancyRate,propertyFee} = JSON.parse(option.body)
+  const obj = JSON.parse(option.body)
+  console.log(obj)
+  //查数据库，id===id，有就修改数据=>替换对应id的所有数据
+  return{
+    code:200,
+    message:"修改楼宇成功",
+    data:`${obj}接收修改数据`
+  }
+})
