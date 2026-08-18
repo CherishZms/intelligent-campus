@@ -1,6 +1,6 @@
 // 保修管理组件
 import SearchCard from "@/components/mySearch"
-import { Table, Tag,Button,Badge, Form,Descriptions, Input,Radio,Select } from "antd"
+import { Table, Tag,Button,Badge, Form,Descriptions, Input,Radio,Select, message } from "antd"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import type {TableProps,PaginationProps,DescriptionsProps} from 'antd'
 import { getRepairListApi,updateRepairMajorApi } from "@/api/repair"
@@ -123,8 +123,10 @@ function Repair(){
   }
   async function updateRepairMajor(){
     if(curItem){
-      const res = await updateRepairMajorApi({repairId:curItem?.repairId,repairMajor})
-      console.log(res)
+      await updateRepairMajorApi({repairId:curItem?.repairId,repairMajor})
+      // console.log(res)
+      message.success("指派成功")
+      setRepairMajor("")
     }
    
    }
@@ -137,11 +139,12 @@ function Repair(){
     // console.log(value)
     setRepairMajor(value)
   }
-
-  const handleOk = ()=>{
-    updateRepairMajor()
+  //fix:需要等待异步更新数据完成后发请求
+  const handleOk = async ()=>{
+    await updateRepairMajor()
     setIsModalOpen(false)
     getRepairList()
+    setRepairMajor("")
   }
   const repairColumns: TableProps<repairDataType>['columns'] = [
     {
@@ -337,7 +340,7 @@ function Repair(){
       label:"保修负责人",
       children:<>
         {
-          mapCurItem?.repairMajor?mapCurItem?.repairMajor:<MySelect options={selectOptions} onChange={handleSelect}></MySelect>
+          mapCurItem?.repairMajor?mapCurItem?.repairMajor:<MySelect options={selectOptions} onChange={handleSelect} value={repairMajor}></MySelect>
         }
       </>,
       span:"filled",
@@ -369,7 +372,10 @@ function Repair(){
     <MyModal
       title="维修记录"
       isModalOpen={isModalOpen}
-      onCancel={()=>setIsModalOpen(false)}
+      onCancel={()=>{
+        setIsModalOpen(false)
+        setRepairMajor("")  
+      }}
       onOk={handleOk}
     >
       <Descriptions  bordered items={desItems} />
