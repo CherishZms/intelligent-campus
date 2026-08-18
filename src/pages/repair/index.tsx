@@ -1,18 +1,20 @@
 // 保修管理组件
 import SearchCard from "@/components/mySearch"
-import { Table, Tag,Button,Badge } from "antd"
-import { useCallback, useEffect, useState } from "react"
-import type {TableProps,PaginationProps} from 'antd'
-import { getRepairListApi } from "@/api/repair"
+import { Table, Tag,Button,Badge, Form,Descriptions, Input,Radio,Select } from "antd"
+import { useCallback, useEffect, useMemo, useState } from "react"
+import type {TableProps,PaginationProps,DescriptionsProps} from 'antd'
+import { getRepairListApi,updateRepairMajorApi } from "@/api/repair"
 import {dayToYYMMDDHHmmss} from "@/utils/dayjs"
 import MyPagination from "@/components/MyPagination"
-import { number } from "echarts"
+import MyModal from "@/components/myModal"
+import MySelect from "@/components/mySelect"
+import {DefaultOptionType} from "@/components/mySelect"
 
 export interface repairDataType {
   repairId:string, //报修单号
   repairPerson:string, //报修人
   repairPersonTel:string, //报修人电话号码
-  repairAddress:string, //保修地址
+  repairAddress:string, //报修地址
   repairDescription:string, //故障描述
   repairStatus:string, //维修状态：1待维修，2维修中，3已完成
   repairTime:string, //报修时间
@@ -60,6 +62,9 @@ function Repair(){
   const [page,setPage] = useState<number>(1)
   const [pageSize,setPageSize] = useState<number>(10)
   const [loading,setLoading] = useState<boolean>(false)
+  const [isModalOpen,setIsModalOpen] =useState<boolean>(false)
+  const [curItem,setCurItem] = useState<repairDataType>()
+  const [repairMajor,setRepairMajor]  = useState<string>("")
 
   const onInputChange = useCallback((e:React.ChangeEvent<HTMLInputElement>)=>{
     // console.log(e.target.value)
@@ -67,13 +72,37 @@ function Repair(){
   },[])
 
   const onButtonClick = useCallback(()=>{
-    // Todo
-    console.log("点击了查询按钮",search)
-  },[])
+    // console.log("点击了查询按钮",search)
+    setSearch(search)
+  },[search])
+
 
   useEffect(()=>{
     getRepairList()
-  },[page,pageSize])
+  },[page,pageSize,search])
+
+  const mapCurItem = useMemo(()=>{
+    if(curItem){
+      const temp = {...curItem}
+      let tempRepairStatus = temp.repairStatus
+      let tempRepairMajor = temp.repairMajor
+      if(tempRepairStatus === "1"){
+        tempRepairStatus = "待维修"
+        tempRepairMajor = ""
+      }else if(tempRepairStatus === "2"){
+        tempRepairStatus = "维修中"
+      }else{
+        tempRepairStatus = "已完成"
+      }
+      return {
+        ...temp,
+        repairStatus:tempRepairStatus,
+        repairTime:dayToYYMMDDHHmmss(curItem.repairTime),
+        repairMajor:tempRepairMajor
+      }
+    }
+    
+  },[curItem])
 
   async function getRepairList (){
     setLoading(true)
@@ -84,11 +113,36 @@ function Repair(){
     setLoading(false)
   }
 
+  const onAssign = (record:repairDataType)=>{
+    setIsModalOpen(true)
+    setCurItem(record)
+  }
+  const onShow = (record:repairDataType)=>{
+    setIsModalOpen(true)
+    setCurItem(record)
+  }
+  async function updateRepairMajor(){
+    if(curItem){
+      const res = await updateRepairMajorApi({repairId:curItem?.repairId,repairMajor})
+      console.log(res)
+    }
+   
+   }
+
   const onPaginationChange = (page: number, pageSize: number)=>{
     setPage(page)
     setPageSize(pageSize)
   }
+  const handleSelect = async(value:string)=>{
+    // console.log(value)
+    setRepairMajor(value)
+  }
 
+  const handleOk = ()=>{
+    updateRepairMajor()
+    setIsModalOpen(false)
+    getRepairList()
+  }
   const repairColumns: TableProps<repairDataType>['columns'] = [
     {
       title:"序号",
@@ -195,9 +249,9 @@ function Repair(){
       width:120,
       render(value,record){
         if(record.repairStatus==="1"){
-          return <Button type="primary">指派</Button>
+          return <Button type="primary" onClick={()=>onAssign(record)}>指派</Button>
         }else{
-          return <Button color="primary" variant="outlined">查看</Button>
+          return <Button color="primary" variant="outlined" onClick={()=>onShow(record)}>查看</Button>
         }
       },
       filters:[
@@ -210,6 +264,83 @@ function Repair(){
         }
         return record.repairStatus.indexOf(value as string) === 0
       }
+    },
+  ]
+  const selectOptions:DefaultOptionType[] = [
+    {
+      value:"白军",
+      label:"白军"
+    },
+    {
+      value:"余芳",
+      label:"余芳"
+    },
+    {
+      value:"张平",
+      label:"张平"
+    },
+    {
+      value:"乔明",
+      label:"乔明"
+    },
+    {
+      value:"徐秀英",
+      label:"徐秀英"
+    },
+  ]
+  
+  const desItems:DescriptionsProps['items'] = [
+    {
+      key:"repairId",
+      label:"报修单号",
+      children:mapCurItem?.repairId,
+      span:"filled",
+    },
+    {
+      key:"repairPerson",
+      label:"报修人",
+      children:mapCurItem?.repairPerson,
+      span:"filled",
+    },
+    {
+      key:"repairPersonTel",
+      label:"报修人电话号码",
+      children:mapCurItem?.repairPersonTel,
+      span:"filled",
+    },
+    {
+      key:"repairAddress",
+      label:"报修地址",
+      children:mapCurItem?.repairAddress,
+      span:"filled",
+    },
+    {
+      key:"repairDescription",
+      label:"故障描述",
+      children:mapCurItem?.repairDescription,
+      span:"filled",
+    },
+    {
+      key:"repairStatus",
+      label:"维修状态",
+      children:mapCurItem?.repairStatus,
+      span:"filled",
+    },
+    {
+      key:"repairTime",
+      label:"报修时间",
+      children:mapCurItem?.repairTime,
+      span:"filled",
+    },
+    {
+      key:"repairMajor",
+      label:"保修负责人",
+      children:<>
+        {
+          mapCurItem?.repairMajor?mapCurItem?.repairMajor:<MySelect options={selectOptions} onChange={handleSelect}></MySelect>
+        }
+      </>,
+      span:"filled",
     },
   ]
 
@@ -235,6 +366,15 @@ function Repair(){
       pageSize={pageSize}
       onPaginationChange={onPaginationChange}
     />
+    <MyModal
+      title="维修记录"
+      isModalOpen={isModalOpen}
+      onCancel={()=>setIsModalOpen(false)}
+      onOk={handleOk}
+    >
+      <Descriptions  bordered items={desItems} />
+      
+    </MyModal>
   </div>
 }
 export default Repair
