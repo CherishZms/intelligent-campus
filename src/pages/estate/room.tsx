@@ -47,7 +47,7 @@ function Room(){
   async function getRoomList(){
     setLoading(true)
     const res = await getRoomListServies(selectRadioValue)
-    console.log(res.data.rooms)
+    // console.log(res.data.rooms)
     setRooms(res.data.rooms)
     setLoading(false)
   }

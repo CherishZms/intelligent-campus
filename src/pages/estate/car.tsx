@@ -50,7 +50,7 @@ function Car() {
   const [isModalOpen,setIsModalOpen] = useState<boolean>(false)
   const [curRecord,setCurRecord] = useState<RecordType>()
   const [carList,setCarList] = useState<CarListType[]>([])
-  const [selectedTab,setSelectedTab] = useState<string>("2")
+  const [selectedTab,setSelectedTab] = useState<string>("1")
   const [open,setOpen] = useState<boolean>(false)
   const [curPicSrc,setcurPicSrc] = useState<string>()
   const [carform] = useForm()
@@ -430,7 +430,7 @@ function Car() {
       </Row>
     </Card>
     <Card className="mt">
-      <Tabs items={items} defaultActiveKey="2" onChange={onChangeTabs}></Tabs>
+      <Tabs items={items} defaultActiveKey="1" onChange={onChangeTabs}></Tabs>
     </Card>
     <Modal 
       open={isModalOpen}

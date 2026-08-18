@@ -1,6 +1,7 @@
 import {store} from '@/store'
 import roomPic from "@/assets/roomPic.jpg"
 import Mock from 'mockjs'
+import "./repair"
 
 Mock.setup({
   timeout:"200-600"
@@ -613,7 +614,7 @@ Mock.mock('/deleteEstate',"post",(option:any)=>{
 Mock.mock('/updataEstate',"post",(option:any)=>{
   // const {id,name,person,tel,status,vacancyRate,propertyFee} = JSON.parse(option.body)
   const obj = JSON.parse(option.body)
-  console.log(obj)
+  // console.log(obj)
   //查数据库，id===id，有就修改数据=>替换对应id的所有数据
   return{
     code:200,
@@ -650,6 +651,21 @@ Mock.mock('/roomList',"post",(option:any)=>{
     }
   }
 })
+
+export function getRandomDate(){
+    // 生成 2026 年内的随机日期 + 随机时间
+    const start = new Date('2026-01-01').getTime();
+    const end = new Date('2026-8-17').getTime();
+    const randomTime = start + Math.random() * (end - start);
+    const date = new Date(randomTime);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}+08:00`;
+}
 
 //获取车辆信息列表
 Mock.mock('/getChargeRecordList', 'post', (option:any) => {
