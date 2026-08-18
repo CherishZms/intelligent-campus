@@ -1,5 +1,5 @@
 import {store} from '@/store'
-import { message } from 'antd'
+import roomPic from "@/assets/roomPic.jpg"
 import Mock from 'mockjs'
 
 Mock.setup({
@@ -572,5 +572,245 @@ Mock.mock('/addUser',"post",(option:any)=>{
     code:200,
     message:`新增/修改租户成功！`,
     data:data
+  }
+})
+
+//获取楼宇管理 ////查询楼宇接口
+Mock.mock('/estateList',"post",(option:any)=>{
+  // console.log(option)
+  const reserse = JSON.parse(option.body)
+  // console.log(reserse)
+  return {
+    code:200,
+    message:"获取楼宇列表成功",
+    data:Mock.mock({
+      "list|16":[
+        {
+          "id":"@string('number',6)",
+          "name|+1":["东座1期A栋","东座1期B栋","东座1期C栋","东座1期D栋","东座2期A栋","东座2期B栋","东座2期C栋","东座2期D栋","西座1期A栋","西座1期B栋","西座1期C栋","西座1期D栋","西座2期A栋","西座2期B栋","西座2期C栋","西座2期D栋"],
+          "person":"@cname",
+          "tel" : /1[3-9]\d{9}/,
+          "status|1":["1","2","3"],
+          "vacancyRate":"@integer(1,100)",
+          "propertyFee":"@integer(1,100)"
+        }
+      ]
+    }).list
+  }
+})
+
+//删除楼宇
+Mock.mock('/deleteEstate',"post",(option:any)=>{
+  const {id,name} = JSON.parse(option.body)
+  return {
+    code:200,
+    message:"删除楼宇成功",
+    data:`楼宇id为：${id},名称为${name}`
+  }
+})
+
+//修改楼宇
+Mock.mock('/updataEstate',"post",(option:any)=>{
+  // const {id,name,person,tel,status,vacancyRate,propertyFee} = JSON.parse(option.body)
+  const obj = JSON.parse(option.body)
+  console.log(obj)
+  //查数据库，id===id，有就修改数据=>替换对应id的所有数据
+  return{
+    code:200,
+    message:"修改楼宇成功",
+    data:`${obj}接收修改数据`
+  }
+})
+
+//获取房间列表的接口
+function generateRooms() {
+    const rooms = [];
+    for (let i = 0; i < 50; i++) {
+        const floor = 1 + Math.floor(i / 6); // 每6个房间一层
+        const roomNumber = floor * 100 + (101 + (i % 6)); // 计算房间号
+        rooms.push({
+            roomNumber,
+            decorationType: Mock.Random.pick(['毛坯', '精装']),
+            area: Mock.Random.integer(100, 500),
+            unitPrice: Mock.Random.integer(1, 5),
+            src:roomPic
+        });
+    }
+    return rooms;
+  }
+
+//房间管理
+Mock.mock('/roomList',"post",(option:any)=>{
+  const {roomId} = JSON.parse(option.body)
+  return {
+    code:200,
+    message:`获取房间管理数据成功，${roomId}`,
+    data:{
+      rooms:generateRooms()
+    }
+  }
+})
+
+//获取车辆信息列表
+Mock.mock('/getChargeRecordList', 'post', (option:any) => {
+  const { pageSize = 10, page = 1 } = JSON.parse(option.body) || {};
+  const total = 50; // 总记录数设为 50
+
+  // 计算当前页应返回的条数
+  function getShowCount() {
+    const count = Math.ceil(total / pageSize);
+    if (page > count) {
+      return 0; // 超出页数返回空
+    } else if (page === count) {
+      const remainder = total % pageSize;
+      return remainder === 0 ? pageSize : remainder;
+    } else {
+      return pageSize;
+    }
+  }
+  const showCount = getShowCount();
+
+  return {
+    code: 200,
+    message: '获取充电记录成功',
+    data: Mock.mock({
+      [`list|${showCount}`]: [
+        {
+          // 编号（6位数字）
+          id: '@string("number", 6)',
+          // 订单编号（13位数字）
+          orderId: '@string("number", 13)',
+          // 订单日期（仅日期，不带时间）
+          orderDate: function() {
+            // 生成 2026-01-01 到 2026-12-31 之间的随机日期
+            const start = new Date('2026-01-01').getTime();
+            const end = new Date('2026-8-17').getTime();
+            const randomTime = start + Math.random() * (end - start);
+            const date = new Date(randomTime);
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+          },
+          // 车辆号码（模拟中国大陆车牌，正则生成）
+          carNumber: /[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼][A-Z][A-Z0-9]{5}/,
+          // 车辆类型（枚举）
+          carType: '@pick(["自有车辆", "租赁车辆", "公务用车", "合作车辆"])',
+          // 充电开始时间（ISO 8601 带时区，真实企业推荐格式）
+          chargingBeginTime: function() {
+            // 生成 2026 年内的随机日期 + 随机时间
+            const start = new Date('2026-01-01').getTime();
+            const end = new Date('2026-8-17').getTime();
+            const randomTime = start + Math.random() * (end - start);
+            const date = new Date(randomTime);
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            const seconds = String(date.getSeconds()).padStart(2, '0');
+            return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}+08:00`;
+          },
+          // 充电时长（单位：秒，模拟 10分钟～2小时）
+          chargingDuringTime: '@integer(600, 7200)',
+          // 充电量（单位：kWh，保留2位小数）
+          chargingAmount: '@float(1, 100, 2, 2)',
+          // 充电费用（单位：元，保留2位小数）
+          changingFee: '@float(10, 200, 2, 2)',
+        },
+      ],
+      total,
+      pageSize,
+      page,
+    }),
+  };
+});
+
+
+//获取车辆列表
+Mock.mock('/getCarList', 'post', (option:any) => {
+  const { pageSize = 10, page = 1 } = JSON.parse(option.body) || {};
+  const total = 50; // 总记录数
+
+  // 计算当前页实际返回条数
+  function getShowCount() {
+    const totalPages = Math.ceil(total / pageSize);
+    if (page > totalPages) return 0;
+    if (page === totalPages) {
+      const remainder = total % pageSize;
+      return remainder === 0 ? pageSize : remainder;
+    }
+    return pageSize;
+  }
+  const showCount = getShowCount();
+
+  return {
+    code: 200,
+    message: '获取车辆信息成功',
+    data: Mock.mock({
+      [`list|${showCount}`]: [
+        {
+          // 编号（6位数字）
+          id: '@string("number", 6)',
+          // 车牌号（中国大陆车牌格式）
+          carNumber: /[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼][A-Z][A-Z0-9]{5}/,
+          // 车主姓名（随机中文名）
+          carOwner: '@cname',
+          // 车主电话（11位手机号）
+          carOwnerTel: /1[3-9]\d{9}/,
+          // 租赁类型：1-月租，2-季租，3-年租
+          rentType: '@pick(["1", "2", "3"])',
+          // 剩余租期（天数，0~365）
+          rentLastDate: '@integer(0, 365)',
+          // 入场照片（汽车图片URL）
+          carPic: function() {
+            // 使用 Lorem Flickr 随机汽车图
+            const seed = Math.random().toString(36).substring(7);
+            return `https://loremflickr.com/320/240/car?random=${seed}`;
+          },
+        },
+      ],
+      total,
+      pageSize,
+      page,
+    }),
+  };
+});
+
+//删除院内车辆
+Mock.mock('/deleteCar',"post",(option:any)=>{
+  const {id,carNumber} = JSON.parse(option.body)
+  return {
+    code:200,
+    message:"删除车辆成功",
+    data:`车辆id为：${id},车牌号为${carNumber}`
+  }
+})
+
+//修改院内车辆
+Mock.mock('/updateCar',"post",(option:any)=>{
+  const {
+    id,
+    carNumber,
+    carOwner,
+    carOwnerTel,
+    rentType,
+    rentLastDate,
+    carPic
+  } = JSON.parse(option.body)
+  return {
+    code:200,
+    message:"修改车辆成功",
+    data:`编号为：${id}，车牌号为：${carNumber}，车主姓名：${carOwner}，车主电话号码：${carOwnerTel}，租赁类型：${rentType}，剩余租期为：${rentLastDate}，入场图片为：${carPic}`
+  }
+})
+
+//查询院内车辆
+Mock.mock('/search',"post",(option:any)=>{
+  const {search} = JSON.parse(option.body)
+  return {
+    code:200,
+    message:"查询车辆成功",
+    data:`查询参数为：${search}`
   }
 })
