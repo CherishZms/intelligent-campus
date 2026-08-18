@@ -87,8 +87,8 @@ Mock.mock('/getRepairList', 'post', (option: any) => {
   
   const { pageSize = 10, page = 1, repairStatus, repairMajor, keyword } =
     JSON.parse(option.body) || {};
-  console.log("pageSize",pageSize)
-  console.log("page",page)
+  // console.log("pageSize",pageSize)
+  // console.log("page",page)
 
   // 筛选数据
   let filteredData = [...repairDataStore];
@@ -134,9 +134,9 @@ Mock.mock('/getRepairList', 'post', (option: any) => {
  * POST /updateRepair
  * 参数：{ repairId, ...updateFields }
  */
-Mock.mock('/updateRepair', 'post', (option: any) => {
+Mock.mock('/updateRepairMajor', 'post', (option: any) => {
   const body = JSON.parse(option.body) || {};
-  const { repairId, ...updateData } = body;
+  const { repairId, repairMajor } = body;
 
   if (!repairId) {
     return {
@@ -154,10 +154,11 @@ Mock.mock('/updateRepair', 'post', (option: any) => {
   }
 
   // 更新数据（不允许修改 repairId 和 repairTime）
-  const { repairId: _, repairTime: __, ...validUpdateData } = updateData;
+  // const { repairId: _, repairTime: __, ...validUpdateData } = updateData;
   repairDataStore[index] = {
     ...repairDataStore[index],
-    ...validUpdateData,
+    repairMajor:repairMajor,
+    repairStatus:"2"
   };
 
   return {
