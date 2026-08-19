@@ -3,7 +3,9 @@ import { Card, Row, Col, Input, Button, Select, Table, TableProps, Tag } from 'a
 import { ChangeEvent, useEffect, useState } from 'react'
 import {getConstractListApi} from "@/api/constract"
 import MyPagination from "@/components/MyPagination"
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import {setConstractListStore,setSearchDataStore,setPageStore,setPageSizeStore,setTotalStore,clearConstractDataStore} from "@/store/constractSlice"
 
 interface SearchDataType {
   contractNo: string,
@@ -36,10 +38,15 @@ function Contract() {
   const [loading,setLoading] =useState<boolean>(false)
   const [page,setPage] = useState<number>(1)
   const [pageSize,setpageSize] = useState<number>(10)
-  const [constractId,setConstractId] = useState<string>("")
+  // const [constractId,setConstractId] = useState<string>("")
 
+  const {constractListRedux,searchDataRedux,pageRedux,pageSizeRedux,totalRedux} = useSelector((state:any)=>state.constractSlice)
 
   const navigate = useNavigate()
+  const location = useLocation()
+  const dispatch = useDispatch()
+
+  const {detail} = location?.state || ""
  
 
   const handleSearchStatus = (value: string) => {
@@ -63,16 +70,24 @@ function Contract() {
   }
 
   const onSearch = () => {
-    // Todo：查询， {contractNo: '', jia: '', status: '5'}
+    // 查询， {contractNo: '', jia: '', status: '5'}
     // console.log(searchData)
-    getConstractList()
+    getConstractList(page,pageSize)
   }
 
   useEffect(()=>{
-    getConstractList()
-  },[page,pageSize])
+    if(detail && constractListRedux?.length){
+      setConstractList(constractListRedux)
+      setSearchData(searchDataRedux)
+      setPage(pageRedux)
+      setpageSize(pageSizeRedux)
+      setTotal(totalRedux)
+    }else{
+      getConstractList(page,pageSize)
+    }
+  },[])
 
-  async function getConstractList (){
+  async function getConstractList (page:number,pageSize:number){
     setLoading(true)
     const {data:{list,total}} = await getConstractListApi({...searchData,page,pageSize})
     setConstractList(list)
@@ -85,12 +100,18 @@ function Contract() {
     // console.log(pageSize)
     setPage(page)
     setpageSize(pageSize)
+    getConstractList(page,pageSize)
   } 
 
   const toDetail = (id:string)=>{
     console.log(id)
     // state地址栏不显示参数
     navigate('/finance/surrender',{state:{id}})
+    dispatch(setConstractListStore(constractList))
+    dispatch(setSearchDataStore(searchData))
+    dispatch(setPageStore(page))
+    dispatch(setPageSizeStore(pageSize))
+    dispatch(setTotalStore(total))
   }
 
   const constractColumns:TableProps<ConstractType>['columns'] = [
@@ -186,6 +207,7 @@ function Contract() {
     setSearchData(defaultSearchData)
     setPage(1)
     setpageSize(10)
+    getConstractList(1,10)
   }
 
   return <div className="contract">
