@@ -1,6 +1,6 @@
 // 保修管理组件
 import SearchCard from "@/components/mySearch"
-import { Table, Tag,Button,Badge, Form,Descriptions, Input,Radio,Select, message } from "antd"
+import { Table, Tag,Button,Badge, Form,Descriptions, Input,Radio,Select, message,Card } from "antd"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import type {TableProps,PaginationProps,DescriptionsProps} from 'antd'
 import { getRepairListApi,updateRepairMajorApi } from "@/api/repair"
@@ -355,6 +355,7 @@ function Repair(){
       onInputChange={(e)=>onInputChange(e)}
       onButtonClick={onButtonClick}
        />
+       <Card className='mt'>
     <Table 
       columns={repairColumns} 
       dataSource={repairData} 
@@ -363,6 +364,7 @@ function Repair(){
       pagination={false}
       loading={loading}
       />
+      </Card>
     <MyPagination 
       total={total}
       page={page}

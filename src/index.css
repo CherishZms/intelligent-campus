@@ -61,3 +61,7 @@ list{
 .flex{
   display: flex;
 }
+.flexLeft{
+  display: flex;
+  justify-content: flex-start;
+}

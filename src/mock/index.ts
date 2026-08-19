@@ -830,3 +830,48 @@ Mock.mock('/search',"post",(option:any)=>{
     data:`查询参数为：${search}`
   }
 })
+
+
+//合同管理页面
+//合同管理
+  Mock.mock('/contractList', 'post', (option?: any) => {
+  // const {page,pageSize}=JSON.parse(options?.body);
+  // console.log("后端合同管理接到参数",JSON.parse(options.body))
+
+  const { pageSize = 10, page = 1, } = JSON.parse(option.body) || {};
+  
+  // console.log(JSON.parse(option.body))
+  const total = 54; // 总记录数
+
+  // 计算当前页实际返回条数
+   function getShowCount(){
+     const count = Math.ceil(total / pageSize)
+     if(page>count){
+      return total
+     }else if(page===count){
+      return total % pageSize
+     }else{
+      return pageSize
+     }
+  }
+  const showCount = getShowCount()
+
+  return {
+    code: 200,
+    message: "成功",
+    data: Mock.mock({
+      [`list|${showCount}`]: [{
+        'contractNo':'@string("number", 6)',
+        'constractType|1': ['租赁合同','自定义合同','购买合同'],
+        'constractName|1': ["房屋租赁合同通用模版","车位租赁合同通用模版","商业房产买卖合同"],  
+        "constractBeginDate|1":['2024-01-01','2024-03-05','2024-04-01','2023-04-01','2022-04-01'],
+        "constractEndDate|1":['2026-01-01','2026-03-05','2026-04-01','2026-06-01','2026-07-01','2026-08-01','2026-09-01'],
+        'jia|1': ['万物科技有限公司','大鱼网络科技','六六信息技术有限公司'],  
+        'yi': '天明物业有限公司', 
+        'status|1': ["1","2","3","4"],  
+      }],
+      "total": 54
+    })
+    // 生成55条数据
+  }
+});
