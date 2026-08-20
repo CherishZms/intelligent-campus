@@ -103,10 +103,10 @@ function Contract() {
     getConstractList(page,pageSize)
   } 
 
-  const toDetail = (id:string)=>{
-    console.log(id)
+  const toDetail = (record:ConstractType)=>{
+    // console.log(id)
     // state地址栏不显示参数
-    navigate('/finance/surrender',{state:{id}})
+    navigate('/finance/surrender',{state:{record}})
     dispatch(setConstractListStore(constractList))
     dispatch(setSearchDataStore(searchData))
     dispatch(setPageStore(page))
@@ -198,7 +198,7 @@ function Contract() {
       width:120,
       align:'center',
       render(value, record) {
-        return <Button type='primary' size='small' onClick={()=>toDetail(record.contractNo)}>合同详情</Button>
+        return <Button type='primary' size='small' onClick={()=>toDetail(record)}>合同详情</Button>
       },
     },  
   ]
