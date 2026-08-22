@@ -3,6 +3,7 @@ import authSlice from "./userSlice"
 import storage from 'redux-persist/lib/storage' // 使用 localStorage
 import { FLUSH, PAUSE, PERSIST, persistStore,persistReducer, PURGE, REGISTER, REHYDRATE } from "redux-persist";
 import userFormSlice from "./userFormSlice"
+import constractSlice from "./constractSlice"
 
 //配置持久化
 const persistConfig = {
@@ -13,7 +14,8 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   authSlice,
-  userFormSlice
+  userFormSlice,
+  constractSlice
 })
 
 const persisedReducer  = persistReducer(persistConfig,rootReducer)

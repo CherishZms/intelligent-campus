@@ -10,7 +10,8 @@ interface MySelectProps {
   placeholder?: string;
   children?: React.ReactNode;
   showSearch?: boolean;
-  onChange?:SelectProps['onChange']
+  onChange?:SelectProps['onChange'],
+  value:any
 }
 
 function MySelect(props:MySelectProps){
@@ -19,7 +20,8 @@ function MySelect(props:MySelectProps){
     placeholder = "请选择",
     children,
     showSearch=true,
-    onChange
+    onChange,
+    value
   }=props
   return <Select 
       options={options}
@@ -30,6 +32,7 @@ function MySelect(props:MySelectProps){
       }
       style={{width:"100%"}}
       onChange={onChange}
+      value={value} //设置value使其受控
     >
       {children}
   </Select>

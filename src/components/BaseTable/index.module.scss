@@ -1,0 +1,47 @@
+.baseTableWrapper {
+  width: 100%;
+  overflow: hidden;
+
+  :global {
+    .ant-table {
+      font-size: 14px;
+    }
+
+    .ant-table-thead > tr > th {
+      background-color: #fafafa;
+      font-weight: 600;
+    }
+
+    .ant-table-tbody > tr:hover > td {
+      background-color: #f5f7fa;
+    }
+
+    // 序号列特殊样式
+    .ant-table-cell:first-child {
+      color: #8c8c8c;
+      font-weight: 500;
+    }
+
+    // 分页器样式
+    .ant-pagination {
+      margin-top: 16px;
+      margin-bottom: 0;
+    }
+
+    // 表格滚动条
+    .ant-table-body {
+      &::-webkit-scrollbar {
+        height: 8px;
+        width: 8px;
+      }
+      &::-webkit-scrollbar-thumb {
+        background: #d9d9d9;
+        border-radius: 4px;
+      }
+      &::-webkit-scrollbar-track {
+        background: #f0f0f0;
+        border-radius: 4px;
+      }
+    }
+  }
+}
