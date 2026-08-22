@@ -60,6 +60,7 @@ list{
 }
 .flex{
   display: flex;
+  align-items: center;
 }
 .flexLeft{
   display: flex;

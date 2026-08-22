@@ -10,6 +10,11 @@ import { PersistGate } from 'redux-persist/integration/react';
 import {ConfigProvider} from 'antd'
 import zhCN from 'antd/locale/zh_CN';
 
+//antd日期显示英文，三行解决
+import dayjs from 'dayjs';
+import 'dayjs/locale/zh-cn';   // 导入中文语言包
+dayjs.locale('zh-cn'); 
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );

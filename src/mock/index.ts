@@ -2,6 +2,7 @@ import {store} from '@/store'
 import roomPic from "@/assets/roomPic.jpg"
 import Mock from 'mockjs'
 import "./repair"
+import "./bill"
 
 Mock.setup({
   timeout:"200-600"
