@@ -60,4 +60,9 @@ list{
 }
 .flex{
   display: flex;
+  align-items: center;
+}
+.flexLeft{
+  display: flex;
+  justify-content: flex-start;
 }
