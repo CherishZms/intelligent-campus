@@ -20,7 +20,7 @@ function MyPopconfirm (props:PopConfirmType){
 
   const {
     title="删除确认",
-    description="删除不可恢复，是否确认删除",
+    description="此操作不可恢复，请谨慎操作",
     onConfirm=()=>{},
     onCancel=()=>{},
     okText="确认",

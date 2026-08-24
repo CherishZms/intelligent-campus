@@ -33,7 +33,7 @@ export interface UseExportOption<T>{
  * 将原始数据 + 列配置转换为 Excel 可识别的二维对象数组
  */
 export const transformDataForExport = <T extends Record<string,any>>(
-  data:T[],
+  data:T[] ,
   columns:ExportColumn<T>[],
   showIndex:boolean = true
 ):Record<string,any>[]=>{

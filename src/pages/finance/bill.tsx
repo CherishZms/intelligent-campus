@@ -1,5 +1,5 @@
 // 我是账单管理组件
-import { Card, Row, Col, Statistic, Input, Table, Button, Tag, DatePicker, Select, TableProps, TimeRangePickerProps } from "antd"
+import { Card, Row, Col, Statistic, Input, Table, Button, Tag, DatePicker, Select, TableProps, TimeRangePickerProps, message } from "antd"
 import { DownloadOutlined, FileMarkdownOutlined, DeleteOutlined } from '@ant-design/icons'
 import { getBillListApi } from "@/api/bill"
 import { useEffect, useMemo, useState } from "react";
@@ -10,8 +10,16 @@ import { exportToExcel } from "@/utils/exportToExcel/exportToExcel"
 import { ExportButton } from "@/components/ExportButton";
 import { ExportColumn } from "@/utils/exportToExcel/exportConfig";
 import {ExportPDFButton} from "@/components/ExportPDFButton"
+import MyPopconfirm from "@/components/myPopconfirm";
+import { useExportPDF } from "@/hooks/useExportPDF";
 
 const { RangePicker } = DatePicker;
+
+/**
+ * Todo:
+ * 1.增加导入功能，下载模板导入
+ * 2.全部导出
+ */
 
 interface BillType {
   billNo: string, //账单号
@@ -55,11 +63,15 @@ function Bill() {
   const [searchData, setSearchData] = useState<searchDataType>(defaultSearchData)
   const [dateSelect, setDateSelect] = useState<[Dayjs, Dayjs] | null>(null)
   const [loading, setLoading] = useState<boolean>(false)
+ 
 
   const disable = useMemo(() => {
     return selectedRowKeys.length ? false : true
   }, [selectedRowKeys])
 
+  const onPrint = (rows:BillType)=>{
+    
+  }
   const billColumns: TableProps<BillType>['columns'] = [
     {
       key: "index",
@@ -197,11 +209,16 @@ function Bill() {
       title: "操作",
       width: 220,
       align: "center",
-      render() {
+      render(value,record) {
         return <>
-          <Button size="small" type="primary">打印</Button>
-          <Button size="small" type="primary" danger className="ml mr">作废</Button>
-          <Button size="small"  danger>退款</Button>
+          <Button size="small" type="primary" onClick={exportToPDF}>打印</Button>
+          <MyPopconfirm onConfirm={datchdDelete} title="作废确认">
+            <Button size="small" type="primary" danger className="ml mr">作废</Button>
+          </MyPopconfirm>
+          <MyPopconfirm onConfirm={datchdDelete} title="退款确认">
+            <Button size="small"  danger>退款</Button>
+          </MyPopconfirm>
+          
         </>
       },
       fixed: 'end',
@@ -297,6 +314,8 @@ function Bill() {
     await exportToExcel(selectedRows, '账单数据')
   }
 
+   
+
   const exportColumns: ExportColumn<BillType>[] = [
     { dataIndex: 'billNo', title: '账单编号' },
     {
@@ -353,6 +372,29 @@ function Bill() {
       }
     },
   ];
+
+  const datchdDelete = async()=>{
+    if(!selectedRowKeys || selectedRowKeys.length===0){
+      message.warning("请勾选数据")
+    }else{
+      console.log(selectedRowKeys)
+      // 可根据id发请求给后端
+      // await batchDelete(selectedRowKeys)等待完成后重新渲染列表
+      getBillList()
+      setSelectedRowKeys([])
+      setSelectedRows([])
+    }
+    
+  }
+
+  const { exportToPDF } = useExportPDF(
+      selectedRows,
+      exportColumns,
+      "账单打印",
+      true,
+      "打印"
+    );
+
 
 
   return <div className="bill">
@@ -425,7 +467,20 @@ function Bill() {
         disabled={disable}
         className="ml mr"
       />
-      <Button icon={<DeleteOutlined />} danger type="primary" size="large" disabled={disable}>批量作废</Button>
+      <MyPopconfirm
+        onConfirm={datchdDelete}
+        title="作废确认"
+        description="此操作不可恢复，请谨慎操作"
+      >
+        <Button 
+          icon={<DeleteOutlined />} 
+          danger 
+          type="primary" 
+          size="large" 
+          disabled={disable} 
+        >
+          批量作废</Button>
+        </MyPopconfirm>
       
     </Card>
     <Card className="mt">
