@@ -140,7 +140,7 @@ function OperationAll() {
               <Card title="待办事项">
                 {
                   todoList.map(item=>{
-                    return <Row gutter={16} className="mb">
+                    return <Row gutter={16} className="mb" key={item.title}>
                       <Col span={12}><Badge status="processing" />  {item.title}</Col>
                       <Col span={12} style={{textAlign:"right"}}>{item.time}</Col>
                     </Row>
@@ -152,7 +152,7 @@ function OperationAll() {
               <Card title="最新通知" extra={<a>更多<RightOutlined /></a>}>
                 {
                   newTopic.map(item=>{
-                    return <Row gutter={16} className="mb">
+                    return <Row gutter={16} className="mb" key={item.title}>
                       <Col span={12}><Badge status="warning" />
                         <Text ellipsis={{tooltip: true}} style={{ width: '240px' }}>{item.title}</Text>
                       </Col>
@@ -177,7 +177,7 @@ function OperationAll() {
                   color:styleColor[index]
                 }
               }
-              return <Row gutter={16} className="mb">
+              return <Row gutter={16} className="mb" key={item.key}>
                 <Col span={8} style={styles}>{item.key}.{item.name}</Col>
                 <Col span={8} style={styles}>人数{item.person}人</Col>
                 <Col span={8} style={styles}>估值{item.money}万元</Col>
