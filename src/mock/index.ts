@@ -3,6 +3,7 @@ import roomPic from "@/assets/roomPic.jpg"
 import Mock from 'mockjs'
 import "./repair"
 import "./bill"
+import "./equiment"
 
 Mock.setup({
   timeout:"200-600"
@@ -181,11 +182,11 @@ const menuList = [
                 "label": "文章发布",
                 "key": "/operation/article",
             },
-            {
-                "icon": "CommentOutlined",
-                "label": "内容评论",
-                "key": "/operation/comments",
-            }
+            // {
+            //     "icon": "CommentOutlined",
+            //     "label": "内容评论",
+            //     "key": "/operation/comments",
+            // }
         ]
     },
     {
@@ -355,11 +356,11 @@ const managerMenuList = [
                 "label": "文章发布",
                 "key": "/operation/article",
             },
-            {
-                "icon": "CommentOutlined",
-                "label": "内容评论",
-                "key": "/operation/comments",
-            }
+            // {
+            //     "icon": "CommentOutlined",
+            //     "label": "内容评论",
+            //     "key": "/operation/comments",
+            // }
         ]
     },
     {
@@ -876,3 +877,113 @@ Mock.mock('/search',"post",(option:any)=>{
     // 生成55条数据
   }
 });
+
+Mock.mock('/getEneryDetail',"post",()=>{
+  return {
+  code: 200,
+  message: "success",
+  data: {
+    timePoints: ["00:00", "04:00", "08:00", "12:00", "16:00", "20:00", "24:00"],
+    energyData: [
+      { "time": "00:00", "煤": 32, "气": 85, "油": 38, "电": 160, "热": 210 },
+      { "time": "04:00", "煤": 28, "气": 55, "油": 25, "电": 95, "热": 140 },
+      { "time": "08:00", "煤": 48, "气": 195, "油": 110, "电": 380, "热": 420 },
+      { "time": "12:00", "煤": 52, "气": 220, "油": 85, "电": 420, "热": 470 },
+      { "time": "16:00", "煤": 45, "气": 130, "油": 95, "电": 390, "热": 430 },
+      { "time": "20:00", "煤": 35, "气": 170, "油": 55, "电": 310, "热": 360 },
+      { "time": "24:00", "煤": 30, "气": 95, "油": 42, "电": 190, "热": 240 }
+    ]
+  }
+  }
+})
+
+Mock.mock('/getEneryYearDetail',"get",()=>{
+  return {
+  code: 200,
+  message: "success",
+  data: {
+    timePoints: ['煤', '气', '油', '电', '热'],
+    energyDataAll: [
+      { "time": "2026-01", "煤": 32, "气": 85, "油": 38, "电": 160, "热": 210 },
+      { "time": "2026-02", "煤": 28, "气": 55, "油": 25, "电": 95, "热": 140 },
+      { "time": "2026-03", "煤": 48, "气": 195, "油": 110, "电": 380, "热": 420 },
+      { "time": "2026-04", "煤": 52, "气": 220, "油": 85, "电": 420, "热": 470 },
+      { "time": "2026-05", "煤": 60, "气": 130, "油": 95, "电": 390, "热": 430 },
+      { "time": "2026-06", "煤": 35, "气": 170, "油": 55, "电": 310, "热": 360 },
+      { "time": "2026-07", "煤": 40, "气": 195, "油": 142, "电": 90, "热": 220 },
+      { "time": "2026-08", "煤": 38, "气": 295, "油": 142, "电": 190, "热": 140 },
+    ],
+    title:['2026-01', '2026-02', '2026-03', '2026-04', '2026-05', "2026-06","2026-07","2026-08"]
+  }
+  }
+})
+
+Mock.mock('/getEnergyData',"get",()=>{
+  return {
+    code:200,
+    message:"获取电力消耗占比数据成功",
+    data: {
+    categories: ["工厂生产设备", "空调暖通", "日常照明", "办公设备", "动力设备", "充电桩", "其他辅助"],
+    values: [365, 210, 130, 98, 72, 58, 42]
+  }
+  }
+})
+
+//能源消耗公司排行
+const buildings = [
+  '东座1期A栋', '东座1期B栋', '东座1期C栋', '东座1期D栋',
+  '东座2期A栋', '东座2期B栋', '东座2期C栋', '东座2期D栋',
+  '西座1期A栋', '西座1期B栋', '西座1期C栋', '西座1期D栋',
+  '西座2期A栋', '西座2期B栋', '西座2期C栋', '西座2期D栋',
+]
+
+const companyNameParts = [
+  '云来', '智创', '华讯', '天行', '博远', '瑞达', '科瑞',
+  '迅捷', '恒通', '万联', '启航', '星辰', '鹏城', '湾区',
+  '数字', '未来', '智慧', '互联', '芯光', '源动'
+]
+
+function generateRoom() {
+  const building = buildings[Math.floor(Math.random() * buildings.length)]
+  const floor = Math.floor(Math.random() * 9) + 2  // 2~10
+  const room = Math.floor(Math.random() * 6) + 1   // 1~6
+  const roomNumber = `${floor}${room.toString().padStart(2, '0')}` // 如806
+  return `${building}${roomNumber}`
+}
+
+function generateCompanyData() {
+  const name = `深圳${companyNameParts[Math.floor(Math.random() * companyNameParts.length)]}科技有限公司`
+  const address = generateRoom()
+  // 总能耗基准 150~350
+  const total = Math.floor(Math.random() * 200) + 150
+  // 各分量比例：电 ~50%，热 ~30%，碳 ~20%，再加随机偏移
+  const electricBase = Math.round(total * 0.5)
+  const heatBase = Math.round(total * 0.3)
+  const carbonBase = Math.round(total * 0.2)
+  // 添加 ±15% 的随机波动
+  const electric = Math.round(electricBase * (0.85 + Math.random() * 0.3))
+  const heat = Math.round(heatBase * (0.85 + Math.random() * 0.3))
+  const carbon = Math.round(carbonBase * (0.85 + Math.random() * 0.3))
+  return {
+    companyName: name,
+    address,
+    energy: electric,
+    hotEnergy: heat,
+    carbon,
+    total: electric + heat + carbon  // 用于排序
+  }
+}
+
+// 生成10条数据，按total降序排列
+const mockData = Array.from({ length: 10 }, generateCompanyData)
+  .sort((a, b) => b.total - a.total)
+  .map(({ total, ...rest }) => rest)  // 移除排序字段
+
+// Mock接口
+Mock.mock('/getCompanyEnergyData', 'get', () => {
+  return {
+    code: 200,
+    message: '获取公司能源消耗数据成功',
+    data: mockData
+  }
+})
