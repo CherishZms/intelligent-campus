@@ -1,5 +1,5 @@
-# 1.设置@别名
-## 解决：安装craco
+## 1.设置@别名
+### 解决：安装craco
 ### 1)npm install @craco/craco --save-dev
 ### 2)根目录创建craco.config.js
     const path = require('path');
@@ -27,7 +27,6 @@
         // ... 其余配置保持不变
       }
     }
-
 ## 2.eslink、prettier
 ## 3.路由守卫、请求响应拦截
 ## 4.不支持导入scss格式的样式表
@@ -42,7 +41,7 @@ declare module '*.sass' {
   const content: { [className: string]: string };
   export default content;
 }
-
+## 5.增加防抖：查询，表单提交
 
 
 
