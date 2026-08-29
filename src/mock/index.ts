@@ -4,6 +4,7 @@ import Mock from 'mockjs'
 import "./repair"
 import "./bill"
 import "./equiment"
+import { message } from 'antd'
 
 Mock.setup({
   timeout:"200-600"
@@ -41,8 +42,9 @@ interface MockRequestOption {
 Mock.mock("/login","post",(option:MockRequestOption)=>{
 
   const userList = [
-    {username:'admin',password:"123456"},
+    {username:'super',password:"123456"},
     {username:'user',password:"123456"},
+    {username:'admin',password:"123456"},
   ]
 
   // 把字符串body解析成js对象
@@ -56,7 +58,7 @@ Mock.mock("/login","post",(option:MockRequestOption)=>{
       message:"用户名或密码不正确"
     }
   }
-  if(user.username==='admin' && user.password==='123456'){
+  if(user.username==='super' && user.password==='123456'){
       return {
         code:200,
         message:"登录成功",
@@ -76,6 +78,17 @@ Mock.mock("/login","post",(option:MockRequestOption)=>{
           // access_token:generateBearerToken(),
           // refresh_token:generateBearerToken()
           access_token:'MockTokenUser'
+        }
+    }
+  }else if(user.username==='admin' && user.password==='123456'){
+    return {
+        code:200,
+        message:"登录成功",
+        data:{
+          username:username,
+          // access_token:generateBearerToken(),
+          // refresh_token:generateBearerToken()
+          access_token:'MockTokenAdmin'
         }
     }
   }
@@ -986,4 +999,145 @@ Mock.mock('/getCompanyEnergyData', 'get', () => {
     message: '获取公司能源消耗数据成功',
     data: mockData
   }
+})
+export interface MenuType  {
+  icon:string,
+  label:string,
+  key:string,
+  children:MenuType[]
+}
+
+interface UserListType{
+   userId:string
+    userName:string,
+    passward?:string,
+    role:string,
+    person:string,
+    apartment:string,
+    modify?:boolean,
+    tel:string,
+    menu:any
+}
+
+
+let userList:UserListType[] = [
+  {userId:'1001',userName:'super',passward:'123456',role:'superAdmin',person:'superAdmin',apartment:'研发部',modify:false,tel:"13267835262",menu:menuList},
+  {userId:'1002',userName:'zhangsan',passward:'123456',role:'admin',person:'张三',apartment:'网络部',modify:true,tel:"15972530175",menu:managerMenuList},
+  {userId:'1003',userName:'lisi',passward:'123456',role:'user',person:'李四',apartment:'行政部',modify:true,tel:"18876291730",menu:userMenuList},
+  {userId:'1004',userName:'user',passward:'123456',role:'user',person:'普通用户',apartment:'访客',modify:true,tel:"18876291730",menu:userMenuList},
+  {userId:'1005',userName:'admin',passward:'123456',role:'admin',person:'管理员',apartment:'管理员',modify:true,tel:"18876291730",menu:menuList},
+]
+
+Mock.mock('/getSystemUserList',"post",(option?:any)=>{
+  // if(option){
+  //   const {page=1,pageSize=10,name} = JSON.parse(option.body)
+  // }
+  return {
+    code:200,
+    message:"获取系统用户列表成功",
+    data:{
+      list:userList,
+      total:userList.length
+    }
+  }
+})
+
+Mock.mock('/searchUser','post',(option:any)=>{
+  const {userName} = JSON.parse(option?.body)
+  const userNameList = userList.map((item:any)=>item.userName)
+  const userPersonList = userList.map((item:any)=>item.person)
+  // console.log("userNameList",userNameList)
+  if(userNameList.includes(userName) || userPersonList.includes(userName)){
+    const temp = userList.filter(item=>item.userName===userName || item.person===userName)
+    console.log(temp)
+    return {
+    code:200,
+    message:"查询账号成功",
+    data:{
+      list:temp,
+      total:temp.length
+    }
+  }
+  }else{
+    return {
+      code:200,
+      message:"该账号名称不存在",
+      data:{
+        list:[],
+        total:0
+      }
+    }
+  }
+  
+})
+
+Mock.mock('/addUser','post',(option:any)=>{
+  const {userId,userName,passward=123456,role,person,apartment,modify=true,tel} = JSON.parse(option.body)
+  const userNameList = userList.map((item:any)=>item.userName) 
+  if(userNameList.includes(userName)){
+    return {
+      code:409,
+      message:"账户名称已存在",
+      data:null
+    }
+  }else{
+    const newUser:UserListType = {
+      userId:(+userList[userList.length-1].userId +1).toString(),
+      userName,
+      passward,
+      role,
+      apartment,
+      modify,
+      tel,
+      person,
+      menu:role==='admin'?menuList:userMenuList
+    }
+    userList.push(newUser)
+    return {
+      code:200,
+      message:"新增用户成功",
+      data:{
+        list:userList,
+        total:userList.length
+      }
+    }
+  }
+})
+
+Mock.mock('/getMenu',"post",(option:any)=>{
+  const {userName,role} = JSON.parse(option.body)
+  return {
+    code:200,
+    message:"获取菜单树成功",
+    data:{
+      list:role==='admin'?menuList:userMenuList
+    }
+  }
+})
+
+Mock.mock('/deleteUser','post',(option:any)=>{
+  const {userName,userId} = JSON.parse(option.body)
+  const ids = userList.map(item=>item.userId)
+  if(ids.includes(userId)){
+    userList = userList.filter(item=>item.userId!==userId)
+    return {
+      code:200,
+      message:"删除用户成功",
+      data:{
+        list:userList,
+        total:userList.length
+      }
+    }
+  }else{
+    return {
+      code:200,
+      message:"该用户不存在",
+      data:{
+        list:[],
+        total:0
+      }
+    }
+  }
+  
+  
 })
