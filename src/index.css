@@ -66,3 +66,18 @@ list{
   display: flex;
   justify-content: flex-start;
 }
+
+.mst{
+  margin-top: 8px;
+}
+
+.msl{
+  margin-left: 8px;
+}
+
+.msr{
+  margin-right: 8px;
+}
+.msb{
+  margin-bottom: 8px;
+}

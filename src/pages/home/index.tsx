@@ -22,7 +22,7 @@ const Home: React.FC = () => {
         <Header style={{ padding: 0,background: colorBgContainer,textAlign:"right",paddingRight:'40px'}} >
           <MyHeader />
         </Header>
-        <Content style={{ margin: '0 16px',height:'90vh',overflowY:'scroll', overflowX:'hidden' }}>
+        <Content style={{ margin: '0 16px',height:'calc(100vh - 64px - 69px)',overflowY:'auto', overflowX:'hidden' }}>
           <MyBreadCrumb />
           <Outlet />
         </Content>
