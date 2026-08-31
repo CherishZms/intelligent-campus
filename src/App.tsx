@@ -5,6 +5,7 @@ import { genterateRouter } from '@/router/generateRouter'
 import {defaultRouters} from '@/router/defaultRouter'
 import { createBrowserRouter } from "react-router-dom";
 import { RouteObject } from "react-router-dom";
+import { Skeleton } from "antd";
 
 /*
   React.lazy要搭配Supense一起使用
@@ -19,6 +20,7 @@ function App() {
   const [routersList,setRoutersList] = useState(defaultRouters)
   const token = useSelector((state:any)=>state.authSlice.token)
   const {asyncRouterList} = useSelector((state:any)=>state.authSlice)
+  const [loading,setLoading] = useState<boolean>(false)
   useEffect(()=>{
     if(token && asyncRouterList && asyncRouterList.length>0){
       getMenuList()
@@ -28,6 +30,7 @@ function App() {
     return createBrowserRouter(routersList)
   },[routersList])
   function getMenuList(){
+    setLoading(true)
       const route = genterateRouter(asyncRouterList)
       // console.log('111',route)
       const routes:RouteObject[] = [...routersList]
@@ -46,10 +49,11 @@ function App() {
       // }
       // console.log(routes)
       setRoutersList(routes)
+      setLoading(false)
   }
   
   return (
-    <Suspense fallback={<h1>加载中</h1>}>
+    <Suspense fallback={<Skeleton active loading={loading} />}>
       {/*增加key，强制重置路由 */}
       <RouterProvider router={router} key={router} />
     </Suspense>

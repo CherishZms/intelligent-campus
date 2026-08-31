@@ -1,4 +1,4 @@
-import { Card, Col, Input, Row, Button, Table,Pagination, Tag, Popconfirm,message } from "antd"
+import { Card, Col, Input, Row, Button, Table,Pagination, Tag, Popconfirm,message,Skeleton } from "antd"
 import type { TableProps,PaginationProps } from "antd"
 import type { DataType } from './userDataType'
 import { useCallback, useMemo, useState } from "react"
@@ -263,14 +263,16 @@ function UserList() {
       </Popconfirm>
     </Card>
     <Card className="mt">
+      <Skeleton active loading={loading}>
       <Table 
         columns={columns} 
         dataSource={dataList} 
         rowKey={record => record.id}
         rowSelection={rowSelection}
-        loading={loading}
+        // loading={loading}
         pagination={false}
       />
+      </Skeleton>
       <Pagination 
         className="mt flexRight"
         total={total}
