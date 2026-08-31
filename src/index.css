@@ -81,3 +81,12 @@ list{
 .msb{
   margin-bottom: 8px;
 }
+
+/* 加载中 */
+.spin{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+}

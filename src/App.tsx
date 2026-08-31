@@ -5,7 +5,7 @@ import { genterateRouter } from '@/router/generateRouter'
 import {defaultRouters} from '@/router/defaultRouter'
 import { createBrowserRouter } from "react-router-dom";
 import { RouteObject } from "react-router-dom";
-import { Skeleton } from "antd";
+import { Skeleton, Spin } from "antd";
 
 /*
   React.lazy要搭配Supense一起使用
@@ -53,7 +53,8 @@ function App() {
   }
   
   return (
-    <Suspense fallback={<Skeleton active loading={loading} />}>
+    // <Suspense fallback={<Skeleton active loading={loading} />}>
+    <Suspense fallback={<Spin className="spin"/>}>
       {/*增加key，强制重置路由 */}
       <RouterProvider router={router} key={router} />
     </Suspense>
