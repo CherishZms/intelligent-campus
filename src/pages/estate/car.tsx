@@ -9,6 +9,8 @@ import type { DescriptionsProps } from 'antd';
 import come from "@/assets/come.jpg"
 import MyPopconfirm from "@/components/myPopconfirm"
 import { useForm } from "antd/es/form/Form"
+import { AuthButton } from "@/components/AuthButton.tsx"
+import { PermissionCode } from "@/types/permission"
 
 export type RecordType = {
   id:string,  //编号
@@ -366,9 +368,13 @@ function Car() {
       align:'center',
       render(value,record){
         return <>
-          <Button type="primary" className="mr" onClick={()=>editCarItem(record)}>编辑</Button>
+        <AuthButton type="primary" className="mr" onClick={()=>editCarItem(record)} permission={PermissionCode.ADMIN_EDIT}>
+          编辑
+          </AuthButton>
           <MyPopconfirm onConfirm={()=>deletItem(record)}>
-            <Button type="primary" danger >删除</Button>
+            <AuthButton permission={PermissionCode.ADMIN_DELETE}  type="primary" danger>
+            删除
+            </AuthButton>
           </MyPopconfirm>
         </>
       }

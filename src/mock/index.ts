@@ -66,7 +66,8 @@ Mock.mock("/login","post",(option:MockRequestOption)=>{
           username:username,
           // access_token:generateBearerToken(),
           // refresh_token:generateBearerToken()
-          access_token:'MockTokenAdmin'
+          access_token:'MockTokenAdmin',
+          permissions:['admin:add','admin:edit','admin:delete','user:add','user:edit','user:delete']
         }
     }
   }else if(user.username==='user' && user.password==='123456'){
@@ -77,7 +78,8 @@ Mock.mock("/login","post",(option:MockRequestOption)=>{
           username:username,
           // access_token:generateBearerToken(),
           // refresh_token:generateBearerToken()
-          access_token:'MockTokenUser'
+          access_token:'MockTokenUser',
+          permissions:['user:add']
         }
     }
   }else if(user.username==='admin' && user.password==='123456'){
@@ -88,7 +90,8 @@ Mock.mock("/login","post",(option:MockRequestOption)=>{
           username:username,
           // access_token:generateBearerToken(),
           // refresh_token:generateBearerToken()
-          access_token:'MockTokenAdmin'
+          access_token:'MockTokenAdmin',
+          permissions:['admin:add','admin:edit','admin:delete']
         }
     }
   }

@@ -5,7 +5,7 @@ import logo from '@/assets/logo.png'
 import { Button,  Form, Input,message } from 'antd';
 import { UserOutlined,LockOutlined } from '@ant-design/icons';
 import {login} from '@/api/user'
-import { setToken } from '@/store/userSlice';
+import { setPermissions, setToken } from '@/store/userSlice';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
@@ -39,6 +39,7 @@ function Login(){
         message.success(data.message)
         dispatch(setToken(data.data.access_token))
         localStorage.setItem('username',data.data.username)
+        dispatch(setPermissions(data.data.permissions))
         
         const resData = await getMenu()
         dispatch(setAsyncRouterList(resData.data))
