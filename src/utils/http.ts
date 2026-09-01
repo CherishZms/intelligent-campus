@@ -2,7 +2,7 @@
 import {store} from "@/store";
 import axios,{AxiosInstance,InternalAxiosRequestConfig,AxiosResponse} from "axios";
 
-console.log(process.env.REACT_APP_URL)
+// console.log(process.env.REACT_APP_URL)
 
 const http:AxiosInstance = axios.create({
   baseURL:"",
