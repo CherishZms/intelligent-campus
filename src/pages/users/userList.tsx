@@ -8,7 +8,9 @@ import UserModel from './userModel'
 import React from "react"
 import { deleteUserByIdApi,batchDeleteUsersByIdApi } from "@/api/userList"
 import { setUserEditForm } from "@/store/userFormSlice"
-import { useDispatch, UseDispatch } from "react-redux"
+import { useDispatch } from "react-redux"
+import { AuthButton } from "@/components/AuthButton.tsx"
+import { PermissionCode } from "@/types/permission"
 
 const defaultSearchList = { 
     companyName: "", //公司名称
@@ -147,13 +149,16 @@ function UserList() {
       align: 'center',
       render(value,record){
       return <>
-      <Button 
+      <AuthButton
+        permission={PermissionCode.ADMIN_DELETE}
         color="primary" 
         variant="solid" 
         className="mr" 
         size="small"
         onClick={()=>handleVisible(record)}
-        >编辑</Button>
+      >
+      编辑
+        </AuthButton>
       <Popconfirm
         title="删除确认"
         description="删除不可恢复，是否确认删除"
@@ -162,7 +167,13 @@ function UserList() {
         okText="确认"
         cancelText="取消"
       >
-        <Button color="danger" variant="solid" size="small">删除</Button>
+        <AuthButton 
+          permission={PermissionCode.ADMIN_DELETE}
+          color="danger"
+          variant="solid" size="small"
+          >
+          删除
+        </AuthButton>
       </Popconfirm>
       
       </>}
@@ -259,7 +270,9 @@ function UserList() {
         okText="确认"
         cancelText="取消"
       >
-        <Button danger disabled={batchDeleteType} >批量删除</Button>
+        <AuthButton permission={PermissionCode.ADMIN_DELETE} danger disabled={batchDeleteType}>
+        批量删除
+        </AuthButton>
       </Popconfirm>
     </Card>
     <Card className="mt">

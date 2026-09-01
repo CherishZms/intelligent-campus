@@ -8,6 +8,8 @@ import { deleteEstate } from "@/api/estate"
 import React from "react"
 import EsateDrawer from "./estateDrawer"
 import {updataEstateSerive} from "@/api/estate"
+import { AuthButton } from "@/components/AuthButton.tsx"
+import { PermissionCode } from "@/types/permission"
 
 export interface ColumsType {
   // key:string,
@@ -131,9 +133,15 @@ function Tenement(){
     key:"operate",
     render:(value,record)=>{
       return <>
-        <Button type="primary" className="mr" onClick={()=>editEstate(record)}>编辑</Button>
+        <AuthButton 
+          type="primary" 
+          className="mr" 
+          permission={PermissionCode.ADMIN_EDIT}
+          onClick={()=>editEstate(record)}>编辑</AuthButton>
         <MyPopconfirm onConfirm={()=>onDelte(record)}>
-          <Button type="primary" danger>删除</Button>
+          <AuthButton type="primary" danger permission={PermissionCode.ADMIN_DELETE}>
+          删除
+          </AuthButton>
         </MyPopconfirm>
       </>
     },
