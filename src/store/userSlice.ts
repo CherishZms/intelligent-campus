@@ -5,6 +5,7 @@ const authSlice = createSlice({
   initialState:{
     token:"",
     asyncRouterList:[],
+    permissions:[]  as string[]
   },
   reducers:{
     setToken:(state,action)=>{
@@ -13,13 +14,17 @@ const authSlice = createSlice({
     removeToken:(state)=>{
       state.token = ""
       state.asyncRouterList=[]
+      state.permissions=[]
     },
     setAsyncRouterList:(state,{payload})=>{
       state.asyncRouterList = payload
-    }
+    },
+    setPermissions:(state,{payload})=>{
+      state.permissions = payload
+    } 
   }
 })
 
-export const {setToken,removeToken,setAsyncRouterList} = authSlice.actions
+export const {setToken,removeToken,setAsyncRouterList,setPermissions} = authSlice.actions
 
 export default authSlice.reducer

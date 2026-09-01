@@ -50,6 +50,8 @@ function Personal(){
   const [openModal,setOpenModal] =useState<boolean>(false)
   const [cur,setCur] = useState<ListType>()
 
+  const person = localStorage.getItem('person')
+
 
   
   // console.log(today)
@@ -152,7 +154,7 @@ function Personal(){
             <List.Item>
               <List.Item.Meta 
                 avatar = {<Avatar src={`https://api.dicebear.com/10.x/lorelei/svg?seed=1`} size="large" />}
-                title = {localStorage.getItem('person') || "赵丽颖"}
+                title = {person || "赵丽颖"}
                 description="不必焦虑时光，你只管踏实耕耘，时间自会给你答案"
               />
             </List.Item>
