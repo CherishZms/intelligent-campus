@@ -1,0 +1,1 @@
+{"version":3,"file":"static/js/9926.d728a6bb.chunk.js","mappings":"yIAGA,MAAAA,EAHA,WACE,OAAOC,EAAAA,EAAAA,KAAA,OAAAC,SAAK,oDACd","sources":["pages/users/index.tsx"],"sourcesContent":["function Users(){\r\n  return <div>我是租户管理组件</div>\r\n}\r\nexport default Users"],"names":["__WEBPACK_DEFAULT_EXPORT__","_jsx","children"],"sourceRoot":""}

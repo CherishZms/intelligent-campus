@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkintelligent_campus=self.webpackChunkintelligent_campus||[]).push([[9926],{9926(e,n,t){t.r(n);var s=t(579);const u=function(){return(0,s.jsx)("div",{children:"\u6211\u662f\u79df\u6237\u7ba1\u7406\u7ec4\u4ef6"})};t.d(n,["default",0,u])}}]);
+//# sourceMappingURL=9926.46f23e99.chunk.js.map
