@@ -1,0 +1,1 @@
+{"version":3,"file":"static/js/6214.4dc0903d.chunk.js","mappings":"yIAGA,MAAAA,EAHA,WACE,OAAOC,EAAAA,EAAAA,KAAA,OAAAC,SAAK,oDACd","sources":["pages/estate/index.tsx"],"sourcesContent":["function Estate(){\r\n  return <div>我是物业管理组件</div>\r\n}\r\nexport default Estate"],"names":["__WEBPACK_DEFAULT_EXPORT__","_jsx","children"],"sourceRoot":""}
