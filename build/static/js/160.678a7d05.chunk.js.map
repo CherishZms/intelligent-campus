@@ -1,0 +1,1 @@
+{"version":3,"file":"static/js/160.b5d704d1.chunk.js","mappings":"uIAGA,MAAAA,EAHA,WACE,OAAOC,EAAAA,EAAAA,KAAA,OAAAC,SAAK,oDACd","sources":["pages/finance/index.tsx"],"sourcesContent":["function Finance(){\r\n  return <div>我是财务管理组件</div>\r\n}\r\nexport default Finance"],"names":["__WEBPACK_DEFAULT_EXPORT__","_jsx","children"],"sourceRoot":""}
