@@ -2,7 +2,7 @@
 
 基于 React 19 + TypeScript 构建的产业园区综合管理后台，覆盖租户、物业、财务、报修、招商、运营、能源等 10+ 业务模块，内置完整的 RBAC 动态路由与按钮级权限体系，以及 ECharts 数据可视化大屏。
 
-![输入图片说明](screenshotslogin.png)
+![输入图片说明](screenshot/%E7%99%BB%E5%BD%95%E9%A1%B5%E9%9D%A2/login.png)
 
 ---
 
