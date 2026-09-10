@@ -427,7 +427,12 @@ const handleTreeCheck:TreeProps['onCheck'] = (checked)=>{
         <Form.Item
           label="使用人号码"
            name="tel"
-          rules={[{required:true,message:"号码不能为空"}]}
+          rules={[{required:true,message:"号码不能为空"},
+            {
+              pattern:/^[\d-]{7,20}$/,
+              message:"请输入有效的电话号码（7-20位数字，可包含横杠）"
+            }
+          ]}
         >
           <Input  
             value={formData.tel} 
