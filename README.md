@@ -2,7 +2,7 @@
 
 > 基于 React 19 + TypeScript 构建的产业园区综合管理后台，覆盖租户、物业、财务、报修、招商、运营、能源等 10+ 业务模块，内置完整的 RBAC 动态路由与按钮级权限体系，以及 ECharts 数据可视化大屏。
 
-![login](D:\Desktop\myProjects\项目整理\登录页面\login.png)
+![输入图片说明](screenshot/%E7%99%BB%E5%BD%95%E9%A1%B5%E9%9D%A2/login.png)
 
 
 ---
@@ -58,17 +58,17 @@
 
 | 登录 | 工作台 |
 | --- | --- |
-| ![login](D:\Desktop\myProjects\项目整理\登录页面\login.png) | ![dashboard](D:\Desktop\myProjects\项目整理\工作台\dashboard.png) |
+| ![输入图片说明](screenshot/%E7%99%BB%E5%BD%95%E9%A1%B5%E9%9D%A2/login.png) | ![输入图片说明](screenshot/%E5%B7%A5%E4%BD%9C%E5%8F%B0/dashboard.png) |
 | **租户列表** | **车辆信息** |
-| ![userList](D:\Desktop\myProjects\项目整理\租户管理\userList.png) | ![estate-car](D:\Desktop\myProjects\项目整理\物业管理\estate-car.png) |
+| ![输入图片说明](screenshot/%E7%A7%9F%E6%88%B7%E7%AE%A1%E7%90%86/userList.png) | ![输入图片说明](screenshot/%E7%89%A9%E4%B8%9A%E7%AE%A1%E7%90%86/estate-car-list.png) |
 | **房间管理** | **报修管理** |
-| ![estate-room](D:\Desktop\myProjects\项目整理\物业管理\estate-room.png) | ![repair](D:\Desktop\myProjects\项目整理\报修管理\repair.png) |
+| ![输入图片说明](screenshot/%E7%89%A9%E4%B8%9A%E7%AE%A1%E7%90%86/estate-room.png) | ![输入图片说明](screenshot/%E6%8A%A5%E4%BF%AE%E7%AE%A1%E7%90%86/repair.png) |
 | **账单管理** | **合同管理** |
-| ![bill](D:\Desktop\myProjects\项目整理\财务管理\bill.png) | ![contract](D:\Desktop\myProjects\项目整理\财务管理\contract.png) |
+| ![输入图片说明](screenshot/%E8%B4%A2%E5%8A%A1%E7%AE%A1%E7%90%86/bill.png) | ![输入图片说明](screenshot/%E8%B4%A2%E5%8A%A1%E7%AE%A1%E7%90%86/contract.png) |
 | **能源消耗** | **设备管理** |
-| ![energy](D:\Desktop\myProjects\项目整理\能源消耗\energy.png) | ![equimemt](D:\Desktop\myProjects\项目整理\设备管理\equimemt.png) |
+| ![输入图片说明](screenshot/%E8%83%BD%E6%BA%90%E6%B6%88%E8%80%97/energy.png) | ![输入图片说明](screenshot/%E8%AE%BE%E5%A4%87%E7%AE%A1%E7%90%86/equimemt.png)|
 | **系统设置** | **个人中心** |
-| ![settings](D:\Desktop\myProjects\项目整理\系统设置\settings.png) | ![personal](D:\Desktop\myProjects\项目整理\个人中心\personal.png) |
+| ![输入图片说明](screenshot/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E7%BD%AE/settings.png) | ![输入图片说明](screenshot/%E4%B8%AA%E4%BA%BA%E4%B8%AD%E5%BF%83/personal.png) |
 
 ---
 
