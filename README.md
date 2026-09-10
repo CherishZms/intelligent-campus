@@ -54,7 +54,7 @@
 页面预览
 
   登录  	工作台 
-      	    
+  ![输入图片说明](screenshot/%E7%99%BB%E5%BD%95%E9%A1%B5%E9%9D%A2/login.png)    	    ![输入图片说明](screenshot/%E5%B7%A5%E4%BD%9C%E5%8F%B0/dashboard.png)
   租户列表	车辆信息
       	    
   房间管理	报修管理
